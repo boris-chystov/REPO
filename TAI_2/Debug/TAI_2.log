@@ -1,0 +1,76 @@
+﻿  main2.cpp
+C:\Users\Borys\source\repos\TAI_2\main2.cpp(87,29): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+C:\Users\Borys\source\repos\TAI_2\main2.cpp(95,27): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\Borys\source\repos\TAI_2\main2.cpp(122,14): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+C:\Users\Borys\source\repos\TAI_2\main2.cpp(123,20): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\Borys\source\repos\TAI_2\main2.cpp(133,26): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
+C:\Users\Borys\source\repos\TAI_2\main2.cpp(158,22): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Borys\source\repos\TAI_2\main2.cpp(160,31): warning C4244: 'argument': conversion from '_Ty' to 'const _Ty', possible loss of data
+C:\Users\Borys\source\repos\TAI_2\main2.cpp(160,31): warning C4244:         with
+C:\Users\Borys\source\repos\TAI_2\main2.cpp(160,31): warning C4244:         [
+C:\Users\Borys\source\repos\TAI_2\main2.cpp(160,31): warning C4244:             _Ty=int
+C:\Users\Borys\source\repos\TAI_2\main2.cpp(160,31): warning C4244:         ]
+C:\Users\Borys\source\repos\TAI_2\main2.cpp(160,31): warning C4244:         and
+C:\Users\Borys\source\repos\TAI_2\main2.cpp(160,31): warning C4244:         [
+C:\Users\Borys\source\repos\TAI_2\main2.cpp(160,31): warning C4244:             _Ty=float
+C:\Users\Borys\source\repos\TAI_2\main2.cpp(160,31): warning C4244:         ]
+C:\Users\Borys\source\repos\TAI_2\main2.cpp(44,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Borys\source\repos\TAI_2\main2.cpp(58): message : see reference to function template instantiation 'std::vector<float,std::allocator<_Ty>> GetVectorTotal<float>(std::vector<std::vector<_Ty,std::allocator<_Ty>>,std::allocator<std::vector<_Ty,std::allocator<_Ty>>>>)' being compiled
+C:\Users\Borys\source\repos\TAI_2\main2.cpp(58): message :         with
+C:\Users\Borys\source\repos\TAI_2\main2.cpp(58): message :         [
+C:\Users\Borys\source\repos\TAI_2\main2.cpp(58): message :             _Ty=float
+C:\Users\Borys\source\repos\TAI_2\main2.cpp(58): message :         ]
+C:\Users\Borys\source\repos\TAI_2\main2.cpp(91): message : see reference to function template instantiation 'std::vector<float,std::allocator<_Ty>> GetVectorAverage<float>(std::vector<std::vector<_Ty,std::allocator<_Ty>>,std::allocator<std::vector<_Ty,std::allocator<_Ty>>>> &,const bool)' being compiled
+C:\Users\Borys\source\repos\TAI_2\main2.cpp(91): message :         with
+C:\Users\Borys\source\repos\TAI_2\main2.cpp(91): message :         [
+C:\Users\Borys\source\repos\TAI_2\main2.cpp(91): message :             _Ty=float
+C:\Users\Borys\source\repos\TAI_2\main2.cpp(91): message :         ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.23.28105\include\filesystem(2091): message : see reference to class template instantiation 'std::chrono::time_point<std::filesystem::_File_time_clock,std::filesystem::_File_time_clock::duration>' being compiled
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.23.28105\include\xstring(1764): message : see reference to class template instantiation 'std::basic_string_view<wchar_t,std::char_traits<wchar_t>>' being compiled
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.23.28105\include\chrono(669): message : see reference to class template instantiation 'std::chrono::duration<double,std::ratio<1,1>>' being compiled
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.23.28105\include\chrono(177): message : see reference to class template instantiation 'std::chrono::duration<__int64,std::nano>' being compiled
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.23.28105\include\chrono(647): message : see reference to class template instantiation 'std::chrono::time_point<std::chrono::steady_clock,std::chrono::steady_clock::duration>' being compiled
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.23.28105\include\xmemory(758,82): warning C4244: 'initializing': conversion from '_Ty' to '_Objty', possible loss of data
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.23.28105\include\xmemory(758,82): warning C4244:         with
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.23.28105\include\xmemory(758,82): warning C4244:         [
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.23.28105\include\xmemory(758,82): warning C4244:             _Ty=int
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.23.28105\include\xmemory(758,82): warning C4244:         ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.23.28105\include\xmemory(758,82): warning C4244:         and
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.23.28105\include\xmemory(758,82): warning C4244:         [
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.23.28105\include\xmemory(758,82): warning C4244:             _Objty=float
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.23.28105\include\xmemory(758,82): warning C4244:         ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.23.28105\include\vector(633): message : see reference to function template instantiation 'void std::_Default_allocator_traits<_Alloc>::construct<_Ty,int>(_Alloc &,_Objty *const ,int &&)' being compiled
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.23.28105\include\vector(633): message :         with
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.23.28105\include\vector(633): message :         [
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.23.28105\include\vector(633): message :             _Alloc=std::allocator<float>,
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.23.28105\include\vector(633): message :             _Ty=float,
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.23.28105\include\vector(633): message :             _Objty=float
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.23.28105\include\vector(633): message :         ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.23.28105\include\vector(638): message : see reference to function template instantiation 'void std::_Default_allocator_traits<_Alloc>::construct<_Ty,int>(_Alloc &,_Objty *const ,int &&)' being compiled
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.23.28105\include\vector(638): message :         with
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.23.28105\include\vector(638): message :         [
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.23.28105\include\vector(638): message :             _Alloc=std::allocator<float>,
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.23.28105\include\vector(638): message :             _Ty=float,
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.23.28105\include\vector(638): message :             _Objty=float
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.23.28105\include\vector(638): message :         ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.23.28105\include\vector(651): message : see reference to function template instantiation '_Ty &std::vector<_Ty,std::allocator<_Ty>>::_Emplace_back_with_unused_capacity<int>(int &&)' being compiled
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.23.28105\include\vector(651): message :         with
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.23.28105\include\vector(651): message :         [
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.23.28105\include\vector(651): message :             _Ty=float
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.23.28105\include\vector(651): message :         ]
+C:\Users\Borys\source\repos\TAI_2\main2.cpp(35): message : see reference to function template instantiation '_Ty &std::vector<_Ty,std::allocator<_Ty>>::emplace_back<int>(int &&)' being compiled
+C:\Users\Borys\source\repos\TAI_2\main2.cpp(35): message :         with
+C:\Users\Borys\source\repos\TAI_2\main2.cpp(35): message :         [
+C:\Users\Borys\source\repos\TAI_2\main2.cpp(35): message :             _Ty=float
+C:\Users\Borys\source\repos\TAI_2\main2.cpp(35): message :         ]
+C:\Users\Borys\source\repos\TAI_2\main2.cpp(42): message : see reference to function template instantiation 'size_t EqualizeVectors<float>(std::vector<std::vector<float,std::allocator<_Ty>>,std::allocator<std::vector<_Ty,std::allocator<_Ty>>>> &,const bool)' being compiled
+C:\Users\Borys\source\repos\TAI_2\main2.cpp(42): message :         with
+C:\Users\Borys\source\repos\TAI_2\main2.cpp(42): message :         [
+C:\Users\Borys\source\repos\TAI_2\main2.cpp(42): message :             _Ty=float
+C:\Users\Borys\source\repos\TAI_2\main2.cpp(42): message :         ]
+C:\Users\Borys\source\repos\TAI_2\main2.cpp(58): message : see reference to function template instantiation 'std::vector<float,std::allocator<_Ty>> GetVectorTotal<float>(std::vector<std::vector<_Ty,std::allocator<_Ty>>,std::allocator<std::vector<_Ty,std::allocator<_Ty>>>>)' being compiled
+C:\Users\Borys\source\repos\TAI_2\main2.cpp(58): message :         with
+C:\Users\Borys\source\repos\TAI_2\main2.cpp(58): message :         [
+C:\Users\Borys\source\repos\TAI_2\main2.cpp(58): message :             _Ty=float
+C:\Users\Borys\source\repos\TAI_2\main2.cpp(58): message :         ]
+  TAI_2.vcxproj -> C:\Users\Borys\source\repos\TAI_2\Debug\TAI_2.exe
