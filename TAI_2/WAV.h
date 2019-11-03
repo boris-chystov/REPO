@@ -68,6 +68,8 @@ auto WavReader(const char* fileName) -> vector<int>
 	//Write data into the file
 	for (auto i = 0; i < samples_count; i++)
 	{
+		auto val = value[i];
+		if (val == 0) continue;
 		vecResult.push_back(value[i]);
 	}
 	

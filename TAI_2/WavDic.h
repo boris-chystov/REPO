@@ -1,10 +1,11 @@
 #include <vector>
+#include <string>
 
 class Blocks
 {
 public:
-	std::vector<float> vec;
-	float error;
+	std::vector<double> vec;
+	double error;
 	int blockID;
 
 	Blocks(int id = 0)
@@ -18,14 +19,23 @@ class Music
 {
 public:
 	int MusicID;
+	double errorToSample;
+	string Name;
+	
 	std::vector<Blocks> MusicBlocks;
-
 	std::vector<Blocks> CodeBook;
 
-	Music()
+	Music(): MusicID(0), errorToSample(0)
 	{
-		MusicID = 0;
 	}
+};
+
+class Sample
+{
+public:
+
+
+	std::vector<Blocks> SampleBlocks;
 
 };
 

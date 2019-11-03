@@ -1,5 +1,7 @@
 #include "WAV.h"
 #include "WavDic.h"
+#include "Utils.h"
+
 #include <filesystem>
 #include <algorithm>
 #include <iostream>
@@ -8,63 +10,8 @@
 #include <valarray>
 
 using namespace std;
+Utils utils;
 
-template <typename T>
-double	euclideanDistance(const vector<T>& a, const vector<T>& b)
-{
-	vector<double>	auxiliary;
-	transform(a.begin(), a.end(), b.begin(), back_inserter(auxiliary),[](T element1, T element2) {return pow((element1 - element2), 2); });
-	return  sqrt(accumulate(auxiliary.begin(), auxiliary.end(), 0.0));
-}
-
-template<class TargetClass>
-size_t EqualizeVectors(std::vector<std::vector<TargetClass>>& target, const bool equalize = true)
-{
-	if (target.empty())
-		return 0;
-	size_t greatest_size = 0;
-	for (auto& elem : target)
-		for (auto& elem2 : target)
-			if (elem.size() > greatest_size)
-				greatest_size = elem.size();
-			else if (elem.size() > elem2.size())
-				greatest_size = elem.size();
-	if (equalize)
-		for (auto& elem : target)
-			for (auto i = 0; i < signed(greatest_size - elem.size()); i++)
-				elem.emplace_back(0);
-	return greatest_size;
-}
-
-template<class TargetClass>
-std::vector<TargetClass> GetVectorTotal(std::vector<std::vector<TargetClass>> target)
-{
-	const auto size = EqualizeVectors(target);
-	std::vector<TargetClass> totals;
-	for (auto i = 0; i < size; i++)
-	{
-		TargetClass sum = 0;
-		for (auto j = 0; j < signed(target.size()); j++)
-			sum += target[j][i];
-		totals.emplace_back(sum);
-		sum = 0;
-	}
-	return totals;
-}
-
-template<class TargetClass>
-std::vector<TargetClass> GetVectorAverage(std::vector<std::vector<TargetClass>>& target, const bool omit_zero = true)
-{
-	std::vector<TargetClass> totals = GetVectorTotal(target);
-	if (omit_zero)
-		for (auto i = 0; i < signed(totals.size()); i++)
-			if (totals[i] == 0)
-				totals.erase(totals.begin() + i);
-	std::vector<TargetClass> averages(totals.size());
-	for (auto i = 0; i < signed(totals.size()); i++)
-		averages[i] = totals[i] / target.size();
-	return averages;
-}
 
 
 void updateCodebook(Music& music)
@@ -76,11 +23,13 @@ void updateCodebook(Music& music)
 		auto i = find_if(music.MusicBlocks.begin(), music.MusicBlocks.end(), [&](const Blocks& m) -> bool { return m.blockID == codebookElement.blockID;  });
 
 		vector<Blocks> matches;
-		vector<vector<float>> vec;
+		vector<vector<double>> vec;
 
 		copy_if(music.MusicBlocks.begin(), music.MusicBlocks.end(), back_inserter(matches), [&](Blocks v) {
 			return v.blockID == codebookElement.blockID;
 		});
+
+		if(matches.empty()) continue;
 
 		for (auto& element : matches)
 		{
@@ -88,10 +37,8 @@ void updateCodebook(Music& music)
 			vec.push_back(element.vec);
 		}
 
-		auto averages = GetVectorAverage(vec);
+		auto averages = utils.GetVectorAverage(vec);
 		codebookElement.vec = averages;
-
-
 		codebookElement.error = maxError;
 		
 	}
@@ -99,8 +46,12 @@ void updateCodebook(Music& music)
 
 void createCodebook(Music& music)
 {
-	auto error = 100000000;
-	size_t nelems = 10;
+	cout << "Creating CodeBook for: " << music.Name << endl;
+	
+	auto error = 100000000.0;
+	auto prevError = 0.0;
+	size_t nelems = 150;
+
 	sample(
 		music.MusicBlocks.begin(),
 		music.MusicBlocks.end(),
@@ -109,14 +60,13 @@ void createCodebook(Music& music)
 		mt19937{ random_device{}() }
 	);
 
-	for(auto i = 0 ; i< 15; i++)
-	{
+	while (true) {
 		for (auto& block : music.MusicBlocks)
 		{
-			auto error = 100000000;
+			auto error = 100000000.0;
 			for (auto codebookElement : music.CodeBook)
 			{
-				auto distance = euclideanDistance(block.vec, codebookElement.vec);
+				auto distance = utils.euclideanDistance(block.vec, codebookElement.vec);
 				if (distance < error)
 				{
 					error = distance;
@@ -127,34 +77,38 @@ void createCodebook(Music& music)
 		}
 
 		updateCodebook(music);
-		auto error =0;
+		error = 0.0;
 		for (auto& element : music.CodeBook)
 		{
 			error += element.error;
 		}
 
-		cout << error << "\n";
+		cout << "KNN Error: " << error << endl;
+		
+		//percentagem de erro entre ciclos
+		if (fabs((error - prevError) / prevError * 100) < 1) break;
+		prevError = error;
+
 	}
-	
 }
 
 int main()
 {
-
-	vector<Music> dict;
 	
-	int id = 1;
-	int idBlock = 1;
+	vector<Music> dict;
+	auto id = 1;
+	auto idBlock = 1;
 	auto path = "C:/Users/Borys/Desktop/WAV files-20191019";
+	
 	for (const auto& entry : filesystem::directory_iterator(path)) {
-		
+		cout << "PATH: " << entry.path() << endl;
 		auto music = new Music();
+		music->Name = entry.path().filename().string();
 		music->MusicID = id;
+		
 		auto data = WavReader(entry.path().string().c_str());
-
 		auto block = new Blocks(idBlock);
 
-		
 		for (auto i = 1; i < data.size(); i++)
 		{
 			block->vec.push_back(data[i]);
@@ -177,5 +131,55 @@ int main()
 
 
 	createCodebook(dict[0]);
+	createCodebook(dict[1]);
+	createCodebook(dict[2]);
+	createCodebook(dict[3]);
+	createCodebook(dict[4]);
+	createCodebook(dict[5]);
+	createCodebook(dict[6]);
+
+	Sample sample;
+	auto data = WavReader("C:/Users/Borys/Desktop/sample03.wav");
+	auto block = new Blocks(idBlock);
+
+	for (auto i = 1; i < data.size(); i++)
+	{
+		block->vec.push_back(data[i]);
+
+		if (i % 500 == 0)
+		{
+			sample.SampleBlocks.push_back(*block);
+			block = new Blocks();
+		}
+	}
+	
+	for (auto& music : dict)
+	{
+		auto totalError = 0.0;
+		for (auto& sampleElement : sample.SampleBlocks)
+		{
+			auto error = 1000000000.0;
+			for (auto& musicCodeBook : music.CodeBook)
+			{
+				auto distance = utils.euclideanDistance(sampleElement.vec, musicCodeBook.vec);
+				if (distance < error)
+				{
+					error = distance;
+				}
+			}
+			totalError += error;
+		}
+		music.errorToSample = totalError;
+	}
+
+
+	cout << "RESULTADO;" << endl;
+	cout << dict[0].errorToSample << endl;
+	cout << dict[1].errorToSample << endl;
+	cout << dict[2].errorToSample << endl;
+	cout << dict[3].errorToSample << endl;
+	cout << dict[4].errorToSample << endl;
+	cout << dict[5].errorToSample << endl;
+	cout << dict[6].errorToSample << endl;
 	return 0;
 }
