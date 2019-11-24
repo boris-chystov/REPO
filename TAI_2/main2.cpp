@@ -1,4 +1,5 @@
-#include "WAV.h"
+// #include "WAV.h"
+#include "WAV_Reader.h"
 #include "WavDic.h"
 #include "Utils.h"
 
@@ -98,8 +99,7 @@ int main()
 	vector<Music> dict;
 	auto id = 1;
 	auto idBlock = 1;
-	auto path = "C:/Users/Borys/Desktop/WAV files-20191019";
-	srand(time(NULL)); // used for reset rand number
+	auto path = "wav-files/";
 	
 	for (const auto& entry : filesystem::directory_iterator(path)) {
 		cout << "PATH: " << entry.path() << endl;
@@ -107,7 +107,7 @@ int main()
 		music->Name = entry.path().filename().string();
 		music->MusicID = id;
 		
-		auto data = WavReader(entry.path().string().c_str());
+		auto data = WavReader2(entry.path().string().c_str());
 		auto block = new Blocks(idBlock);
 
 		for (auto i = 1; i < data.size(); i++)
@@ -140,7 +140,7 @@ int main()
 	createCodebook(dict[6]);
 
 	Sample sample;
-	auto data = WavReader("C:/Users/Borys/Desktop/sample03.wav");
+	auto data = WavReader2("wav-files/sample03.wav");
 	auto block = new Blocks(idBlock);
 
 	for (auto i = 1; i < data.size(); i++)

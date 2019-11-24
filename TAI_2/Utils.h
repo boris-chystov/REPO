@@ -2,7 +2,7 @@
 
 #include <vector>
 #include <numeric>
-
+#include <math.h>
 
 using namespace std;
 
