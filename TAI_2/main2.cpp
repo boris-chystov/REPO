@@ -99,6 +99,7 @@ int main()
 	auto id = 1;
 	auto idBlock = 1;
 	auto path = "C:/Users/Borys/Desktop/WAV files-20191019";
+	srand(time(NULL)); // used for reset rand number
 	
 	for (const auto& entry : filesystem::directory_iterator(path)) {
 		cout << "PATH: " << entry.path() << endl;

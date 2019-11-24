@@ -66,9 +66,10 @@ auto WavReader2(const char* fileName) -> vector<int>
 			//Write data into the file
 			for (auto i = 0; i < samples_count; i++)
 			{
-                // Dantiii :: gerar o num random aqui e somar com o resultado do push_back
+                // Adding noise :: generating rand number and sum at the result
+                int numRand = rand() % 101;
 		        if (value[i] == 0) continue;
-				vecResult.push_back(value[i]);
+				vecResult.push_back(value[i] + numRand);
 			}
         
        }
