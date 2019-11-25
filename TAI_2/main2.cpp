@@ -1,7 +1,7 @@
-#include "WAV.h"
+#include "WAV_Reader.h"
 #include "WavDic.h"
 #include "Utils.h"
-
+#include <thread>
 #include <filesystem>
 #include <algorithm>
 #include <iostream>
@@ -11,7 +11,11 @@
 
 using namespace std;
 Utils utils;
-
+int block_size;
+int overlap_factor;
+int codebook_size;
+float stopKnn;
+int noise;
 
 
 void updateCodebook(Music& music)
@@ -27,9 +31,9 @@ void updateCodebook(Music& music)
 
 		copy_if(music.MusicBlocks.begin(), music.MusicBlocks.end(), back_inserter(matches), [&](Blocks v) {
 			return v.blockID == codebookElement.blockID;
-		});
+			});
 
-		if(matches.empty()) continue;
+		if (matches.empty()) continue;
 
 		for (auto& element : matches)
 		{
@@ -40,23 +44,22 @@ void updateCodebook(Music& music)
 		auto averages = utils.GetVectorAverage(vec);
 		codebookElement.vec = averages;
 		codebookElement.error = maxError;
-		
+
 	}
 }
 
 void createCodebook(Music& music)
 {
 	cout << "Creating CodeBook for: " << music.Name << endl;
-	
+
 	auto error = 100000000.0;
 	auto prevError = 0.0;
-	size_t nelems = 150;
 
-	sample(
+	 sample(
 		music.MusicBlocks.begin(),
 		music.MusicBlocks.end(),
 		back_inserter(music.CodeBook),
-		nelems,
+		codebook_size,
 		mt19937{ random_device{}() }
 	);
 
@@ -83,103 +86,85 @@ void createCodebook(Music& music)
 			error += element.error;
 		}
 
-		cout << "KNN Error: " << error << endl;
-		
+		cout << "KNN Error " << music.Name << " : " << error << endl;
+
 		//percentagem de erro entre ciclos
-		if (fabs((error - prevError) / prevError * 100) < 1) break;
+		if (fabs((error - prevError) / prevError * 100) < stopKnn) break;
 		prevError = error;
 
 	}
+	utils.codebookToFile(music);
+
 }
 
 int main()
 {
-	
+
+	string directory;
+	cout << "Please insert the directory in which the codebooks are placed: ";
+	cin >> directory;
+
+	cout << "Please insert the desired block size: ";
+	cin >> block_size;
+
+	cout << "Please insert the overlap factor: ";
+	cin >> overlap_factor;
+
+	cout << "Please insert the codebook size: ";
+	cin >> codebook_size;
+
+	cout << "Percentage(0 - 100) KNN Stop: ";
+	cin >> stopKnn;
+
+	cout << "Please insert the noise (0  -  X): ";
+	cin >> noise;
+
+	if(block_size <= overlap_factor or overlap_factor < 0){
+		cout << "overlap factor cannot be greater than the block size" << endl;
+		return 0;
+	}
+
 	vector<Music> dict;
 	auto id = 1;
 	auto idBlock = 1;
-	auto path = "C:/Users/Borys/Desktop/WAV files-20191019";
-	
+	auto path = directory;
+
 	for (const auto& entry : filesystem::directory_iterator(path)) {
 		cout << "PATH: " << entry.path() << endl;
 		auto music = new Music();
 		music->Name = entry.path().filename().string();
 		music->MusicID = id;
-		
-		auto data = WavReader(entry.path().string().c_str());
+		music->Shift = overlap_factor;
+		music->MusicBlockSize = block_size;
+
+		auto data = WavReader2(entry.path().string().c_str(), noise);
 		auto block = new Blocks(idBlock);
 
-		for (auto i = 1; i < data.size(); i++)
+		for(auto i = 1; i < data.size(); i++)
 		{
 			block->vec.push_back(data[i]);
 
-			if (i % 500 == 0)
+			if((i % block_size == 0 and block->vec.size() == block_size) or block->vec.size() == block_size)
 			{
 				music->MusicBlocks.push_back(*block);
 				block = new Blocks(++idBlock);
+				i -= overlap_factor;
 			}
-
-			/*if (i == data.size() - 1)
-			{
-				music->MusicBlocks.push_back(*block);
-			}*/
-
 		}
 		id++;
 		dict.push_back(*music);
 	}
 
-
-	createCodebook(dict[0]);
-	createCodebook(dict[1]);
-	createCodebook(dict[2]);
-	createCodebook(dict[3]);
-	createCodebook(dict[4]);
-	createCodebook(dict[5]);
-	createCodebook(dict[6]);
-
-	Sample sample;
-	auto data = WavReader("C:/Users/Borys/Desktop/sample03.wav");
-	auto block = new Blocks(idBlock);
-
-	for (auto i = 1; i < data.size(); i++)
+	vector<thread> thrVec;
+	for(auto& element : dict)
 	{
-		block->vec.push_back(data[i]);
-
-		if (i % 500 == 0)
-		{
-			sample.SampleBlocks.push_back(*block);
-			block = new Blocks();
-		}
-	}
 	
-	for (auto& music : dict)
-	{
-		auto totalError = 0.0;
-		for (auto& sampleElement : sample.SampleBlocks)
-		{
-			auto error = 1000000000.0;
-			for (auto& musicCodeBook : music.CodeBook)
-			{
-				auto distance = utils.euclideanDistance(sampleElement.vec, musicCodeBook.vec);
-				if (distance < error)
-				{
-					error = distance;
-				}
-			}
-			totalError += error;
-		}
-		music.errorToSample = totalError;
+		thrVec.emplace_back([&](){createCodebook(element); });
+
 	}
-
-
-	cout << "RESULTADO;" << endl;
-	cout << dict[0].errorToSample << endl;
-	cout << dict[1].errorToSample << endl;
-	cout << dict[2].errorToSample << endl;
-	cout << dict[3].errorToSample << endl;
-	cout << dict[4].errorToSample << endl;
-	cout << dict[5].errorToSample << endl;
-	cout << dict[6].errorToSample << endl;
+	for(auto& t: thrVec)
+	{
+		t.join();
+	}
 	return 0;
 }

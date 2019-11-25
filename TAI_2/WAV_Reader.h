@@ -4,6 +4,7 @@
 #include <cstring>
 #include <iostream>
 #include <vector>
+#include <random>
 
 
 using namespace std;
@@ -31,7 +32,7 @@ typedef struct  WAV_HEADER
 } wav_hdr;
 
 
-auto WavReader2(const char* fileName) -> vector<int>
+auto WavReader2(const char* fileName, int noiseRand = 0) -> vector<int>
 {
     vector<int> vecResult;
     wav_hdr wavHeader;
@@ -45,35 +46,46 @@ auto WavReader2(const char* fileName) -> vector<int>
     if (bytesRead > 0)
     {
         //Read the data
-        uint16_t bytesPerSample = wavHeader.bitsPerSample / 8;      //Number     of bytes per sample
-        uint64_t numSamples = wavHeader.ChunkSize / bytesPerSample; //How many samples are in the wav file?
+        uint16_t sample_size = wavHeader.bitsPerSample / 8;
+        uint64_t samples_count = wavHeader.ChunkSize / sample_size; 
         static const uint16_t BUFFER_SIZE = 4096;
         int8_t* buffer = new int8_t[BUFFER_SIZE];
+
+        auto* value = new short int[samples_count];
         
-			auto sample_size = wavHeader.bitsPerSample / 8;
-			int samples_count = wavHeader.ChunkSize * 8 / wavHeader.bitsPerSample;
+        memset(value, 0, sizeof(short int) * samples_count);
 
-            auto* value = new short int[samples_count];
-			
-			memset(value, 0, sizeof(short int) * samples_count);
+        //Reading data
+        for (auto i = 0; i < samples_count; i++)
+        {
+            fread(&value[i], sample_size, 1, wavFile);
+        }
 
-			//Reading data
-			for (auto i = 0; i < samples_count; i++)
-			{
-				fread(&value[i], sample_size, 1, wavFile);
-			}
+        if(noiseRand != 0) {        
+            std::random_device dev;
+            std::mt19937 rng(dev());
+            std::uniform_int_distribution<mt19937::result_type> dist6(1,noiseRand); // distribution in range [1, 6]
 
-			//Write data into the file
-			for (auto i = 0; i < samples_count; i++)
-			{
+            //Write data into the file
+            for (auto i = 0; i < samples_count; i++)
+            {
                 auto val = value[i];
-                val = val >> 8;
-                val = val << 8;
-		        if (val == 0) continue;
-				vecResult.push_back(value[i]);
-			}
-        
-       }
+                if (val == 0) continue;
+
+                vecResult.push_back(value[i] + dist6(rng));
+            }
+        } else {
+            //Write data into the file
+            for (auto i = 0; i < samples_count; i++)
+            {
+                auto val = value[i];
+                if (val == 0) continue;
+
+                vecResult.push_back(value[i]);
+            }
+        }
+    
+    }
     fclose(wavFile);
 
 	return  vecResult;

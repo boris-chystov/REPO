@@ -20,8 +20,10 @@ class Music
 public:
 	int MusicID;
 	double errorToSample;
-	string Name;
-	
+	std::string Name;
+	int Shift;
+	int MusicBlockSize;
+
 	std::vector<Blocks> MusicBlocks;
 	std::vector<Blocks> CodeBook;
 
@@ -34,8 +36,8 @@ class Sample
 {
 public:
 
-
 	std::vector<Blocks> SampleBlocks;
+	std::vector<Blocks> CodeBook;
 
 };
 
